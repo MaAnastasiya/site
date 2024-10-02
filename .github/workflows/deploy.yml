@@ -1,4 +1,4 @@
-name: Deploy MkDocs to GitHub Pages
+name: Deploy MkDocs site to GitHub Pages
 
 on:
   push:
@@ -10,24 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Укажите версию Python, которая вам нужна
 
-    - name: Install dependencies
-      run: |
-        pip install mkdocs
+      - name: Install dependencies
+        run: |
+          pip install mkdocs  # Установка MkDocs
+          pip install -r requirements.txt  # Установить дополнительные зависимости, если есть
 
-    - name: Build MkDocs site
-      run: |
-        mkdocs build --site-dir site
+      - name: Build MkDocs site
+        run: |
+          mkdocs build --site-dir site  # Сборка сайта в папку site
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # Деплой с помощью actions-gh-pages
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Токен для деплоя
+          publish_dir: ./site  # Папка для деплоя (папка site)
+          keep_files: false
